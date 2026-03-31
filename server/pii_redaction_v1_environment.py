@@ -98,6 +98,29 @@ class PiiRedactionV1Environment(Environment):
                     {"id": "HARD-005", "text": "Security logged a breach by user 'admin_jenny'. Jenny proved her account was compromised by intern Marcus. Marcus confessed and is terminated. Jenny is cleared.", "truth": ["Marcus"]}
                 ]
             }
+            # "hard": {
+            #     "initial_rules": "Redact Passwords and API Keys.",
+            #     "data": [
+            #         {"id": "HARD-001", "text": "Exception in thread 'main' java.sql.SQLException: Access denied for user 'root'@'10.0.0.5' (using password: YES)\nCaused by: com.mysql.cj.exceptions.CJException: Invalid credentials. Auth string: db_admin:SuperSecret123!", "truth": ["SuperSecret123!"]},
+            #         {"id": "HARD-002", "text": "2026-03-30T08:14:22Z [WARN] Failed to authenticate webhook. Payload: {\"event\":\"push\",\"repo\":\"auth-service\",\"headers\":{\"Authorization\":\"Bearer AKIAIOSFODNN7EXAMPLE\",\"X-Forwarded-For\":\"192.168.1.10\"}}", "truth": ["AKIAIOSFODNN7EXAMPLE"]},
+            #         {"id": "HARD-003", "text": "Staging config dump:\nDB_HOST=172.16.254.1\nSTRIPE_ENV=test\nSTRIPE_SECRET=sk_test_4eC39HqLyjWDarjtT1zdp7dc\nPORT=8080", "truth": ["sk_test_4eC39HqLyjWDarjtT1zdp7dc"]},
+            #         {"id": "HARD-004", "text": "User reported login issue. Machine 10.10.10.50. Bash history shows: `curl -u admin:MyP@ssw0rd! https://internal-api.corp/v1/health`", "truth": ["MyP@ssw0rd!"]},
+            #         {"id": "HARD-005", "text": "Subnet 192.168.100.2 alert. Exposed commit hash 8f3a1b2c. Environment variable GITHUB_TOKEN=ghp_16C7e42F292c6912E7710c838347Ae178B4a was pushed to public repo.", "truth": ["ghp_16C7e42F292c6912E7710c838347Ae178B4a"]},
+            #         {"id": "HARD-006", "text": "FTP transfer failed. \nConnection string: ftp://ftp_admin:Welcome2026@origin.storage.net:21/backups/ \nOrigin IP: 10.0.1.15", "truth": ["Welcome2026"]},
+            #         {"id": "HARD-007", "text": "Worker 172.16.0.4 crashed. Env dump: NODE_ENV=prod, SG_KEY=SG.abc123def456.xyz890, MAX_RETRIES=3. Restarting.", "truth": ["SG.abc123def456.xyz890"]},
+                    
+            #         # --- RULE SHIFT HAPPENS HERE (Index 7) ---
+            #         # Now redacting Passwords, API Keys, AND IP Addresses.
+            #         {"id": "HARD-008", "text": "Network Timeout Log. Src: 192.168.1.50 Dest: 10.0.0.1. Plaintext auth detected: Admin@99.", "truth": ["192.168.1.50", "Admin@99"]},
+            #         {"id": "HARD-009", "text": "Redis cluster configuration mismatch on node-A (10.1.1.20). \nrequirepass Redis!Secure\nmaxmemory 2gb", "truth": ["10.1.1.20", "Redis!Secure"]},
+            #         {"id": "HARD-010", "text": "Production deployment via node 172.31.4.99. Env update: LIVE_KEY_V2=sk_live_1234567890abcdef. Deployment successful.", "truth": ["sk_live_1234567890abcdef", "172.31.4.99"]},
+            #         {"id": "HARD-011", "text": "Fatal kernel panic on 192.168.2.100. Drop to recovery shell requested. Master unlock hash: Rec0very#Hash.", "truth": ["192.168.2.100", "Rec0very#Hash"]},
+            #         {"id": "HARD-012", "text": "VPN gateway proxy from 10.8.0.5 intercepted unencrypted header: `X-Jira-Auth: Basic ATATT3xFfGF0`. Connection dropped.", "truth": ["10.8.0.5", "ATATT3xFfGF0"]},
+            #         {"id": "HARD-013", "text": "Router default config found on 192.168.0.1. Setup wizard bypassing auth. HW_PASS=admin123 flag is still true.", "truth": ["192.168.0.1", "admin123"]},
+            #         {"id": "HARD-014", "text": "Jenkins build #404 failed on agent 10.0.5.55. \nError: AWS_SECRET_ACCESS_KEY wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY is invalid.", "truth": ["10.0.5.55", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"]},
+            #         {"id": "HARD-015", "text": "Docker ps output on 172.17.0.2 shows running container with env arg: MYSQL_ROOT_PASSWORD=r00tP@ss!. Flagged for teardown.", "truth": ["172.17.0.2", "r00tP@ss!"]}
+            #     ]
+            # }
         }
 
     def reset(self, task_name : str = "easy") -> PiiRedactionV1Observation:
