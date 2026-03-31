@@ -1,0 +1,11 @@
+spec_version: 1
+name: pii_redaction_v1
+type: space
+runtime: fastapi
+app: server.app:app
+port: 8000
+description: "A streaming Data Privacy Compliance pipeline evaluating PII redaction across standard, context-aware, and dynamically evolving rulesets."
+tasks:
+  - easy
+  - medium
+  - hard
